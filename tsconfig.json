@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"lib": ["ESNext"],
+		"module": "CommonJS",
+		"esModuleInterop": true,
+		"moduleResolution": "Node",
+		"experimentalDecorators": true,
+
+		"target": "ESNext",
+
+		"outDir": "dist"
+	}
+}
