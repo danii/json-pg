@@ -5,9 +5,9 @@
 		"esModuleInterop": true,
 		"moduleResolution": "Node",
 		"experimentalDecorators": true,
-
+		"noImplicitAny": true,
 		"target": "ESNext",
-
-		"outDir": "dist"
+		"outDir": "dist",
+		"declaration": true
 	}
 }

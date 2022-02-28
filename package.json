@@ -1,7 +1,7 @@
 {
   "name": "json-pg",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +10,11 @@
   "description": "",
   "dependencies": {
     "@types/pg": "^8.6.4",
+    "await-less": "file:../await-less",
     "pg": "^8.7.3"
-  }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ]
 }
