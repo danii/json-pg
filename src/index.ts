@@ -73,7 +73,7 @@ function fromJSON<T extends RemoteData>(
 	});
 }
 
-class Database<T extends RemoteData> {
+export class Database<T extends RemoteData> {
 	readonly client: Client;
 	readonly initialize: Promise<void>;
 
@@ -101,20 +101,6 @@ class Database<T extends RemoteData> {
 		await this.client.query(DATABASE_RESET, [object]);
 	}
 }
-
-/*
-{
-	"guilds": {
-		x => {
-			"entitlements": {
-				y => {
-					"name": "wow"
-				}
-			}
-		}
-	}
-}
-*/
 
 export class RemoteMap<T extends RemoteData> {
 	readonly database: Database<any>;
@@ -272,43 +258,3 @@ class QueryState<T extends RemoteData> {
 		return new QueryState(this.tableID, [...this.built, query]) as Query<R>;
 	} as any;
 }
-
-export async function test() {
-	type DatabaseRoot = {
-		guilds: RemoteMap<DatabaseGuild>
-	};
-
-	type DatabaseGuild = {
-		entitlements: RemoteMap<DatabaseEntitlement>,
-		other: number
-	};
-
-	type DatabaseEntitlement = {
-		name: string
-	};
-
-	const database = new Database<DatabaseRoot>("postgres://danii@localhost/danii");
-
-	await database.set({guilds: new RemoteMap(database)});
-	const root = await database.get();
-
-	await root.guilds.set("0", {entitlements: new RemoteMap(database), other: 4});
-	const guild1 = await root.guilds.get("0");
-
-	guild1.entitlements.set("0", {name: "Guild 0's entitlement."});
-
-	const entitlements2 = new RemoteMap<DatabaseEntitlement>(database);
-	await entitlements2.set("0", {name: "Guild 1's entitlement."});
-	await root.guilds.set("1", {entitlements: entitlements2, other: 9});
-
-	const allEntitlements = await root.guilds.query<string>(guild => guild.entitlements.query(entitlement => entitlement.name));
-	console.log(allEntitlements);
-
-	await database.client.end();
-	console.log("ended");
-
-	//const j = (await db.get());
-	//const d = j.guild.query(guild => guild.entitlements.query(entitlement => entitlement.name));
-}
-
-test();
